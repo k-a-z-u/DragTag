@@ -1,0 +1,11 @@
+search.png		https://www.iconfinder.com/icons/46834/search_icon
+save.png		https://www.iconfinder.com/icons/46830/save_icon
+close.png		https://www.iconfinder.com/icons/46786/cancel_icon
+settings.png	https://www.iconfinder.com/icons/46837/setting_icon
+artist.png		https://www.iconfinder.com/icons/46842/skype_icon
+other.png		https://www.iconfinder.com/icons/46809/idea_icon
+exit.png		https://www.iconfinder.com/icons/6035/exit_icon
+album.png		https://www.iconfinder.com/icons/1481/cd_disc_dvd_pink_icon
+move.png		https://www.iconfinder.com/icons/46800/gunu_icon
+folder.png		https://www.iconfinder.com/icons/40785/folder_open_icon
+app.png			https://www.iconfinder.com/icons/46798/control_edit_icon
