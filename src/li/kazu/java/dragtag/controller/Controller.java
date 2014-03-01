@@ -36,6 +36,7 @@ import li.kazu.java.dragtag.model.LanguageConstant;
 import li.kazu.java.dragtag.settings.Settings;
 import li.kazu.java.dragtag.settings.SettingsConstants;
 import li.kazu.java.dragtag.settings.SettingsModel;
+import li.kazu.java.dragtag.settings.SettingsOverwriteRule.SettingsOverwriteRuleEnum;
 import li.kazu.java.dragtag.tags.FileTags;
 import li.kazu.java.dragtag.view.MainWindow;
 import li.kazu.java.dragtag.view.listeners.ControlActionListener;
@@ -286,12 +287,19 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		
 		try {
 		File out = SaveHelper.getSaveFile(inputModel);
-		
-		if (out.exists()) {
-			String s = "output file already exists!\n" + out.getAbsolutePath() + "\n";
-			s += "existing file's size: " + out.length() + "\n";
-			s += "new file's size: " + currentFile.length();
-			JOptionPane.showMessageDialog(null, s); return;
+				
+		if(out.exists()){
+			if(SettingsModel.get().getOverwriteEnabled()){//follow filerules to properly rename the file
+				SettingsOverwriteRuleEnum rule = SettingsModel.get().getOverwriteRule();
+				if(rule == SettingsOverwriteRuleEnum.FILESIZE_GREATER){
+					if(out.length() >= currentFile.length()){ return; }
+				}
+			}else{
+				String s = "output file already exists!\n" + out.getAbsolutePath() + "\n";
+				s += "existing file's size: " + out.length() + "\n";
+				s += "new file's size: " + currentFile.length();
+				JOptionPane.showMessageDialog(null, s); return;
+			}
 		}
 		
 		// create parent folders if needed
