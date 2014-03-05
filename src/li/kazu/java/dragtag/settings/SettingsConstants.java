@@ -5,6 +5,8 @@ public enum SettingsConstants {
 	ROOT_FOLDER,
 	RENAME_PATTERN,
 	SEARCH_LIMIT,
+	OVERWRITE,
+	OVERWRITE_RULE
 	;
 
 }

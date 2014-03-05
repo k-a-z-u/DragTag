@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 
 import li.kazu.java.dragtag.model.Language;
 import li.kazu.java.dragtag.model.LanguageConstant;
+import li.kazu.java.dragtag.settings.SettingsOverwriteRule.SettingsOverwriteRuleEnum;
 
 public class SettingsModel {
 
@@ -56,5 +57,22 @@ public class SettingsModel {
 		Settings.get().setString(SettingsConstants.SEARCH_LIMIT.toString(), i + "");
 	}
 	
+	
+	public boolean getOverwriteEnabled(){
+		return Settings.get().getBoolEx(SettingsConstants.OVERWRITE.toString());
+	}
+	
+	public void setOverwriteEnabled(boolean val){
+		Settings.get().setBool(SettingsConstants.OVERWRITE.toString(), val);
+	}
+	
+	public SettingsOverwriteRuleEnum getOverwriteRule(){
+		String valueName = Settings.get().getString(SettingsConstants.OVERWRITE_RULE.toString());
+		return SettingsOverwriteRuleEnum.valueOf(valueName);
+	}
+	
+	public void setOverwriteRule(SettingsOverwriteRule val){
+		Settings.get().setString(SettingsConstants.OVERWRITE_RULE.toString(), val.getValue().toString());
+	}
 	
 }
