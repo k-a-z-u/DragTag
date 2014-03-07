@@ -28,7 +28,7 @@ public class SettingsModel {
 	}
 	
 	public void setRenamePattern(String str) throws Exception {
-		Pattern p = Pattern.compile("'([%artist%|%title%|%album| /-])+'");
+		Pattern p = Pattern.compile("((?:%artist%|%title%|%album| |/|-))+");
 		if (!p.matcher(str).matches()) {
 			throw new Exception(Language.get().get(LanguageConstant.ERR_INVALID_PATTERN));
 		}

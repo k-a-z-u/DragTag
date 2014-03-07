@@ -19,6 +19,12 @@ import li.kazu.java.dragtag.model.Language;
 import li.kazu.java.dragtag.model.LanguageConstant;
 import li.kazu.java.dragtag.view.Helper;
 
+/**
+ * dialog asking for permission to overwrite files
+ * 
+ * @author seijikun
+ *
+ */
 @SuppressWarnings("serial")
 public class FileOverwriteDialog extends JDialog {
 	
