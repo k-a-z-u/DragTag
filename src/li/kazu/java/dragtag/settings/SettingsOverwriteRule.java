@@ -1,6 +1,5 @@
 package li.kazu.java.dragtag.settings;
 
-import java.awt.List;
 import java.util.HashMap;
 
 import li.kazu.java.dragtag.model.Language;
@@ -50,7 +49,8 @@ public class SettingsOverwriteRule {
 	
 	
 	public enum SettingsOverwriteRuleEnum{
-		EVER,
+		ALWAYS,
+		ASK,
 		FILESIZE_GREATER
 	}	
 	

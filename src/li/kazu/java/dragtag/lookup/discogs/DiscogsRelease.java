@@ -33,6 +33,7 @@ public class DiscogsRelease implements LookupAlbum {
 	}
 
 	/** set the listener to inform when this dataset changes (e.g. thumb-image loaded) */
+	@Override
 	public void setListener(LookupAlbumListener listener) {
 		this.listener = listener;
 		if (listener != null) {listener.onAlbumDataChanged(this);}
@@ -90,6 +91,7 @@ public class DiscogsRelease implements LookupAlbum {
 
 			// load image in background
 			new Thread() {
+				@Override
 				public void run() {
 										
 					imgThumb = Helper.getImage( fixImgURLs(urlThumb) );

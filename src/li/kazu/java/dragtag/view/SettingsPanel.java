@@ -22,7 +22,9 @@ public class SettingsPanel extends JPanel {
 
 	/** save settings on lost focus */
 	protected FocusListener focusListener = new FocusListener() {
+		@Override
 		public void focusLost(FocusEvent e) {saveSettings();}
+		@Override
 		public void focusGained(FocusEvent e) {}
 	};
 	

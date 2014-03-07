@@ -8,4 +8,5 @@ exit.png		https://www.iconfinder.com/icons/6035/exit_icon
 album.png		https://www.iconfinder.com/icons/1481/cd_disc_dvd_pink_icon
 move.png		https://www.iconfinder.com/icons/46800/gunu_icon
 folder.png		https://www.iconfinder.com/icons/40785/folder_open_icon
+file.png		http://findicons.com/icon/203636/audio_basic?id=205330
 app.png			https://www.iconfinder.com/icons/46798/control_edit_icon

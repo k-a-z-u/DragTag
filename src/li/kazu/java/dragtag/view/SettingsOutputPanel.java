@@ -43,6 +43,7 @@ public class SettingsOutputPanel extends JPanel {
 		
 		btnRoot.setIcon(Helper.getIcon("folder.png"));
 		btnRoot.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				setRootFolder();
 			}

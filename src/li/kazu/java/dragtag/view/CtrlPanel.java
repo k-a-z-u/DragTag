@@ -73,21 +73,25 @@ public class CtrlPanel extends JPanel {
 		btnExit.setToolTipText(Language.get().get(LanguageConstant.MAIN_BTN_EXIT_TOOLTIP));
 		
 		btnSave.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (listener != null) {listener.onSave();}
 			}
 		});
 		btnRename.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (listener != null) {listener.onMove();}
 			}
 		});
 		btnCloseFile.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (listener != null) {listener.onCloseFile();}				
 			}
 		});
 		btnExit.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (listener != null) {listener.onExit();}
 			}

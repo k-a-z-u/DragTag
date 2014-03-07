@@ -136,12 +136,15 @@ public class InputPanel extends JPanel implements InputModelListener {
 		
 		// the search combinations
 		btnSearchAlbum.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestAlbum(txtAlbum.getText()); }
 		});
 		btnSearchArtist.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestArtist(txtArtist.getText()); }
 		});
 		btnSearchTitle.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestTitle(txtTitle.getText()); }
 		});
 		
@@ -157,6 +160,7 @@ public class InputPanel extends JPanel implements InputModelListener {
 	
 	
 	private ItemListener itemListener = new ItemListener() {
+		@Override
 		public void itemStateChanged(ItemEvent e) {
 			if (e.getStateChange() != ItemEvent.SELECTED) {return;}
 			updateModel();
@@ -165,8 +169,11 @@ public class InputPanel extends JPanel implements InputModelListener {
 	
 	/** key-pressed -> update model */
 	private KeyListener keyListener = new KeyListener() {
+		@Override
 		public void keyTyped(KeyEvent e) {}
+		@Override
 		public void keyReleased(KeyEvent e) {updateModel();}
+		@Override
 		public void keyPressed(KeyEvent e) {}
 	};
 	
