@@ -5,6 +5,8 @@ import java.io.File;
 import javax.swing.UIManager;
 
 import li.kazu.java.dragtag.controller.Controller;
+import li.kazu.java.dragtag.fingerprint.chromaprint.Chromaprint;
+import li.kazu.java.dragtag.fingerprint.chromaprint.FingerprinterChromaprint;
 import li.kazu.java.dragtag.lookup.discogs.DiscogsSearch;
 import li.kazu.java.dragtag.model.Language;
 import li.kazu.java.dragtag.settings.Settings;
@@ -22,6 +24,11 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) throws Exception {
+		
+//		FingerprinterChromaprint fc = new FingerprinterChromaprint();
+//		FingerprinterChromaprint.Fingerprint fp = fc.getFingerprint(new File("/mnt/ssss/mp3s/spotify/3.mp3"));
+//		Chromaprint.get(fp);
+//		System.exit(0);
 		
 		Settings.init(new File("settings.conf"), true);
 		Language.init(new File("language.ini"));

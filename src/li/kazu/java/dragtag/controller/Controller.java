@@ -23,6 +23,10 @@ import org.jaudiotagger.tag.id3.ID3v23Tag;
 import org.jaudiotagger.tag.images.Artwork;
 import org.jaudiotagger.tag.images.ArtworkFactory;
 
+import li.kazu.java.dragtag.fingerprint.FPLookupResult;
+import li.kazu.java.dragtag.fingerprint.chromaprint.Chromaprint;
+import li.kazu.java.dragtag.fingerprint.chromaprint.ChromaprintFingerprint;
+import li.kazu.java.dragtag.fingerprint.chromaprint.FingerprinterChromaprint;
 import li.kazu.java.dragtag.lookup.LookupAlbum;
 import li.kazu.java.dragtag.lookup.LookupListener;
 import li.kazu.java.dragtag.lookup.LookupProvider;
@@ -39,6 +43,7 @@ import li.kazu.java.dragtag.settings.SettingsModel;
 import li.kazu.java.dragtag.tags.FileTags;
 import li.kazu.java.dragtag.view.MainWindow;
 import li.kazu.java.dragtag.view.listeners.ControlActionListener;
+import li.kazu.java.dragtag.view.listeners.FingerprintListener;
 import li.kazu.java.dragtag.view.listeners.SearchRequestListener;
 import li.kazu.java.dragtag.view.listeners.SearchSelectListener;
 
@@ -49,7 +54,7 @@ import li.kazu.java.dragtag.view.listeners.SearchSelectListener;
  * @author kazu
  *
  */
-public class Controller implements ControlActionListener, SearchSelectListener, InputModelListener, SearchRequestListener, LookupListener {
+public class Controller implements ControlActionListener, SearchSelectListener, InputModelListener, SearchRequestListener, LookupListener, FingerprintListener {
 
 	private final MainWindow window;
 	private final ArrayList<LookupProvider> provider = new ArrayList<LookupProvider>();
@@ -171,9 +176,12 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		// listen for search-selects
 		window.getSearchPanel().setSearchSelectListener(this);
 
-		// listen for iunput changes 
+		// listen for input changes 
 		window.getInputPanel().setInputListener(this);
 
+		// listen for fingerprint stuff
+		window.getFingerprintPanel().setListener(this);
+		
 		// attach settings to gui
 		window.getSettingsPanel().setSettings(SettingsModel.get());
 
@@ -203,6 +211,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 					currentFile = null;
 					inputModel.clear();
 					inputModel.setChanged(false);
+					onFingerprintResult(null);
 					
 				} else {
 					
@@ -211,7 +220,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 					inputModel.clear();
 					inputModel.setTags(tags);					// this will inform the gui
 					inputModel.setChanged(false);				// the model has the same content as the mp3 -> not changed
-			
+					onFingerprintResult(null);
 				}
 
 				window.getControlPanel().setLoading(false);
@@ -219,6 +228,17 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 			}
 		}.start();
 
+	}
+	
+	/** show new fingerprint scan results */
+	private void onFingerprintResult(final FPLookupResult fp) {
+		this.lastResultFP = fp;
+		window.getFingerprintPanel().showApplyBtn(fp != null);
+		if (fp == null) {
+			window.getFingerprintPanel().reset();
+		} else {
+			window.getFingerprintPanel().showResult(fp);
+		}
 	}
 
 	@Override
@@ -328,7 +348,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 	}
 
 	@Override
-	public void onInputChanged(InputModel model) {
+	public void onInputChanged(final InputModel model) {
 		updateTitleAndButtons();
 	}
 
@@ -353,8 +373,10 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		boolean btnMove =		!isSaving && currentFile != null && !inputModel.isChanged();
 		boolean btnCloseFile =	!isSaving && currentFile != null;
 		boolean pnlInput =		!isSaving && currentFile != null;
+		boolean btnFP =			!isSaving && currentFile != null;
 
 		window.getControlPanel().setButtonStates(btnSave, btnMove, btnCloseFile);
+		window.getFingerprintPanel().showSearchBtn(btnFP);
 		window.setFieldsEnabled(pnlInput);
 
 	}
@@ -376,40 +398,77 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 	}
 
 	@Override
-	public void onSearchRequestArtist(String artist) {
+	public void onSearchRequestArtist(final String artist) {
 		startSearch( new LookupQuery(artist, null, null, null) );
 	}
 
 	@Override
-	public void onSearchRequestTitle(String title) {
+	public void onSearchRequestTitle(final String title) {
 		startSearch( new LookupQuery(null, null, title, null) );		
 	}
 
 	@Override
-	public void onSearchRequestArtistTitle(String artist, String title) {
+	public void onSearchRequestArtistTitle(final String artist, final String title) {
 		startSearch( new LookupQuery(artist, null, title, null) );
 	}
 
 	@Override
-	public void onSearchRequestAlbum(String album) {
+	public void onSearchRequestAlbum(final String album) {
 		startSearch( new LookupQuery(null, album, null, null) );
 	}
 
 	@Override
-	public void onSearchRequestMisc(String artist, String title, String album) {
+	public void onSearchRequestMisc(final String artist, final String title, final String album) {
 		startSearch( new LookupQuery(null, null, null, "\"" + artist + "\" \"" + title + "\"") );
 	}
 
 	
 	@Override
-	public void onLookupDataChange(LookupResult result) {
+	public void onLookupDataChange(final LookupResult result) {
 		window.getSearchPanel().onLookupDataChange(result);		
 	}
 
 	@Override
-	public void onLookupDone(LookupResult result) {
+	public void onLookupDone(final LookupResult result) {
 		window.getSearchPanel().onLookupDone(result);
 		window.setFieldsEnabled(true);
+	}
+
+	@Override
+	public void onUseLastFingerprint() {
+		// set tags and cover from search result (may take some time to load the cover)
+		new Thread() {
+			public void run() {
+				window.getControlPanel().setLoading(true);
+				window.getFingerprintPanel().showSearchBtn(false);
+				window.getFingerprintPanel().showApplyBtn(false);
+				inputModel.setFromSearch(lastResultFP);
+				window.getFingerprintPanel().showSearchBtn(true);
+				window.getFingerprintPanel().showApplyBtn(true);
+				window.getControlPanel().setLoading(false);
+			}
+		}.start();
+	}
+
+	private FPLookupResult lastResultFP = null;
+	
+	@Override
+	public void onPerformLookup() {
+		new Thread() {
+			public void run() {
+				window.getControlPanel().setLoading(true);
+				window.getFingerprintPanel().showSearchBtn(false);
+				window.getFingerprintPanel().showApplyBtn(false);
+				try {
+					final ChromaprintFingerprint fp = FingerprinterChromaprint.getFingerprint(currentFile);
+					onFingerprintResult(Chromaprint.get(fp));
+				} catch (final Exception e) {
+					e.printStackTrace();
+				}
+				window.getFingerprintPanel().showSearchBtn(true);
+				window.getControlPanel().setLoading(false);
+			}
+		}.start();
 	}
 
 

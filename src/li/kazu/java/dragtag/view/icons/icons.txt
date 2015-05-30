@@ -21,3 +21,9 @@ http://www.veryicon.com/icon/16/Object/Buuf/U%20B%20K%20Eternal%20Sledge%20Hamme
 
 music:
 http://www.veryicon.com/icon/16/System/Leomx/Music.png
+
+fingerprint:
+http://www.veryicon.com/icon/png/System/Fugue/fingerprint.png
+
+apply:
+http://www.veryicon.com/icon/16/System/3D%20Interface/apply.png

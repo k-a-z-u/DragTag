@@ -23,6 +23,7 @@ public class MainWindow extends JFrame {
 	private JTabbedPane tabs = new JTabbedPane();
 	private SettingsPanel pnlSettings = new SettingsPanel();
 	private SearchPanel pnlSearch = new SearchPanel(pnlInp);
+	private FingerprintPanel pnlFP = new FingerprintPanel();
 	
 	/** ctor */
 	public MainWindow() {
@@ -56,12 +57,19 @@ public class MainWindow extends JFrame {
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridx = 0; gbc.gridy = 0; gbc.gridwidth = 1; gbc.gridheight = 1; gbc.weighty = 1.0;
 		pnlMain.add(pnlInp, gbc);
+		
 		gbc.gridx = 0; gbc.gridy = 1; gbc.gridwidth = 1; gbc.gridheight = 1; gbc.weighty = 0.0;
 		pnlMain.add(pnlSearch, gbc);
+		
 		gbc.gridx = 1; gbc.gridy = 0; gbc.gridwidth = 1; gbc.gridheight = 2; gbc.weighty = 1.0;
 		pnlMain.add(pnlSearchResult, gbc);
-		gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2; gbc.gridheight = 1; gbc.weighty = 0.0; gbc.fill = GridBagConstraints.HORIZONTAL;
+		
+		gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 3; gbc.gridheight = 1; gbc.weighty = 0.0; gbc.fill = GridBagConstraints.HORIZONTAL;
 		pnlMain.add(pnlCtrl, gbc);
+		
+		gbc.gridx = 2; gbc.gridy = 0; gbc.gridwidth = 1; gbc.gridheight = 1; gbc.weighty = 0.0;
+		pnlMain.add(pnlFP, gbc);
+		
 		
 		// setup the tabs
 		tabs.add( Language.get().get(LanguageConstant.TAB_MAIN), pnlMain );
@@ -84,6 +92,9 @@ public class MainWindow extends JFrame {
 	
 	/** get the search panel */
 	public SearchResultPanel getSearchPanel() {return pnlSearchResult;}
+	
+	/** get the fingerprint panel */
+	public FingerprintPanel getFingerprintPanel() {return pnlFP;}
 	
 	/** get the input panel */
 	public InputPanel getInputPanel() {return pnlInp;}

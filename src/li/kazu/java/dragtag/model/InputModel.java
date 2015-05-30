@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import li.kazu.java.dragtag.fingerprint.FPLookupResult;
 import li.kazu.java.dragtag.lookup.LookupAlbum;
 import li.kazu.java.dragtag.lookup.LookupTrack;
 import li.kazu.java.dragtag.tags.ID3Tags;
@@ -57,7 +58,7 @@ public class InputModel implements ID3Tags {
 	/** set result from lookup */
 	public void setFromSearch(LookupAlbum album, LookupTrack track) {
 		
-		// load new data from search-query
+		// load new data from search-result
 		if (album.getAlbum() != null)	{this.album = album.getAlbum();}
 		if (album.getArtist() != null)	{this.artist = album.getArtist();}
 		if (album.getYear() != null)	{this.year = album.getYear();}
@@ -69,6 +70,20 @@ public class InputModel implements ID3Tags {
 		
 	}
 
+	/** set result from lookup */
+	public void setFromSearch(final FPLookupResult res) {
+		
+		// load new data from search-result
+		if (res.getAlbum() != null)		{this.album = res.getAlbum();}
+		if (res.getYear() != null)		{this.year = res.getYear();}
+		if (res.getGenres() != null)	{this.genres = res.getGenres(); this.genre = res.getGenres()[0];}
+		if (res.getArtist() != null)	{this.artist = res.getArtist();}
+		if (res.getTitle() != null)		{this.title = res.getTitle();}
+		if (res.getCover() != null)		{this.cover = res.getCover();}
+		setChanged(true);
+		
+	}
+	
 	public void setArtist(String artist)	{this.artist = artist;}
 	public void setTitle(String title)		{this.title = title;}
 	public void setAlbum(String album)		{this.album = album;}
