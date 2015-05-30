@@ -43,18 +43,23 @@ public class SearchPanel extends JPanel {
 		
 		// the search combinations
 		btnSearchAlbum.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestAlbum(pnlInput.txtAlbum.getText()); }
 		});
 		btnSearchArtist.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestArtist(pnlInput.txtArtist.getText()); }
 		});
 		btnSearchTitle.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestTitle(pnlInput.txtTitle.getText()); }
 		});
 		btnSearchArtistTitle.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestArtistTitle(pnlInput.txtArtist.getText(), pnlInput.txtTitle.getText()); }
 		});
 		btnSearchOther.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) { btnListener.onSearchRequestMisc(pnlInput.txtArtist.getText(), pnlInput.txtTitle.getText(), pnlInput.txtAlbum.getText()); }
 		});
 

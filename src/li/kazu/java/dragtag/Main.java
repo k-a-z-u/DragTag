@@ -45,7 +45,6 @@ public class Main {
 				
 		Controller c = new Controller(new MainWindow());
 		c.addProvider(new DiscogsSearch());
-		
 	}
 
 }

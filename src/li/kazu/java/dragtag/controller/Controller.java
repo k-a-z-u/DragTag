@@ -40,8 +40,10 @@ import li.kazu.java.dragtag.model.LanguageConstant;
 import li.kazu.java.dragtag.settings.Settings;
 import li.kazu.java.dragtag.settings.SettingsConstants;
 import li.kazu.java.dragtag.settings.SettingsModel;
+import li.kazu.java.dragtag.settings.SettingsOverwriteRule.SettingsOverwriteRuleEnum;
 import li.kazu.java.dragtag.tags.FileTags;
 import li.kazu.java.dragtag.view.MainWindow;
+import li.kazu.java.dragtag.view.dialogs.FileOverwriteDialog;
 import li.kazu.java.dragtag.view.listeners.ControlActionListener;
 import li.kazu.java.dragtag.view.listeners.FingerprintListener;
 import li.kazu.java.dragtag.view.listeners.SearchRequestListener;
@@ -84,6 +86,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		// what to do on DnD	
 		DropTargetListener dtl = new DropTargetListener() {
 
+			@Override
 			public void drop(DropTargetDropEvent e) {
 
 				try {
@@ -148,9 +151,13 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 
 			}
 
+			@Override
 			public void dropActionChanged(DropTargetDragEvent arg0) {}			
+			@Override
 			public void dragOver(DropTargetDragEvent arg0) {}
+			@Override
 			public void dragExit(DropTargetEvent arg0) {}
+			@Override
 			public void dragEnter(DropTargetDragEvent arg0) {}
 
 		};
@@ -202,6 +209,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		}
 		
 		new Thread() {
+			@Override
 			public void run() {
 
 				window.getControlPanel().setLoading(true);
@@ -251,6 +259,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		window.getControlPanel().setLoading(true);
 
 		new Thread() {
+			@Override
 			public void run() {
 
 				try {
@@ -306,12 +315,25 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		
 		try {
 		File out = SaveHelper.getSaveFile(inputModel);
-		
-		if (out.exists()) {
-			String s = "output file already exists!\n" + out.getAbsolutePath() + "\n";
-			s += "existing file's size: " + out.length() + "\n";
-			s += "new file's size: " + currentFile.length();
-			JOptionPane.showMessageDialog(null, s); return;
+				
+		if(out.exists()){
+			if(SettingsModel.get().getOverwriteEnabled()){//follow filerules to properly rename the file
+				SettingsOverwriteRuleEnum rule = SettingsModel.get().getOverwriteRule();
+				if(rule == SettingsOverwriteRuleEnum.FILESIZE_GREATER){
+					if(out.length() >= currentFile.length()){ return; }
+				}else if(rule == SettingsOverwriteRuleEnum.ASK){
+					FileOverwriteDialog askDialog = new FileOverwriteDialog(currentFile, out);
+					askDialog.setVisible(true);
+					if(!askDialog.getResult()){
+						return;
+					}
+				}
+			}else{
+				String s = "output file already exists!\n" + out.getAbsolutePath() + "\n";
+				s += "existing file's size: " + out.length() + "\n";
+				s += "new file's size: " + currentFile.length();
+				JOptionPane.showMessageDialog(null, s); return;
+			}
 		}
 		
 		// create parent folders if needed
@@ -329,6 +351,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 		
 	}
 
+	@Override
 	public void onExit() {
 		System.exit(0);
 	}
@@ -338,6 +361,7 @@ public class Controller implements ControlActionListener, SearchSelectListener, 
 
 		// set tags and cover from search result (may take some time to load the cover)
 		new Thread() {
+			@Override
 			public void run() {
 				window.getControlPanel().setLoading(true);
 				inputModel.setFromSearch(album, track);

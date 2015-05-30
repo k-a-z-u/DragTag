@@ -83,7 +83,17 @@ public class Settings {
 	public int getIntEx(String key) {return Integer.parseInt(getStringEx(key));}
 	
 	/** set int for key and save */
-	public void setInt(String key, int val) {setString(key, val + "");} 
+	public void setInt(String key, int val) {setString(key, val + "");}
+	
+	
+	/** get boolean by key */
+	public boolean getBool(String key){return Boolean.parseBoolean(getString(key));}
+	
+	/** get boolean by key. throws SettingsException if null */
+	public boolean getBoolEx(String key){return Boolean.parseBoolean(getStringEx(key));}
+	
+	/** set boolean for key and save */
+	public void setBool(String key, boolean val){setString(key, Boolean.toString(val));}
 	
 
 }

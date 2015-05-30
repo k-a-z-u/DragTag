@@ -157,10 +157,15 @@ public class SearchResultEntry extends JPanel implements LookupAlbumListener {
 			}
 			
 			lblTrack.addMouseListener(new MouseListener() {
+				@Override
 				public void mouseReleased(MouseEvent arg0)	{lblTrack.setOpaque(false); lblTrack.setBackground(null);}
+				@Override
 				public void mousePressed(MouseEvent arg0)	{lblTrack.setOpaque(true); lblTrack.setBackground(Color.LIGHT_GRAY);}
+				@Override
 				public void mouseExited(MouseEvent arg0)	{}
+				@Override
 				public void mouseEntered(MouseEvent arg0)	{}
+				@Override
 				public void mouseClicked(MouseEvent arg0)	{ if (listener != null) {listener.onSelect(album, track);} }
 			});
 

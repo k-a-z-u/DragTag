@@ -30,6 +30,7 @@ public class DiscogsResult implements LookupResult {
 	private void parse(final String url) {
 
 		new Thread() {
+			@Override
 			public void run() {
 
 				// load data from url

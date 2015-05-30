@@ -22,7 +22,9 @@ public class SettingsPanel extends JPanel {
 
 	/** save settings on lost focus */
 	protected FocusListener focusListener = new FocusListener() {
+		@Override
 		public void focusLost(FocusEvent e) {saveSettings();}
+		@Override
 		public void focusGained(FocusEvent e) {}
 	};
 	
@@ -33,6 +35,7 @@ public class SettingsPanel extends JPanel {
 	private SettingsModel settings = null;
 	private SettingsOutputPanel pnlOutput = new SettingsOutputPanel(this);
 	private SettingsSearchPanel pnlSearch = new SettingsSearchPanel(this);
+	private SettingsFileRulesPanel pnlFileRules = new SettingsFileRulesPanel(this);
 	
 	/** ctor */
 	public SettingsPanel() {
@@ -53,6 +56,9 @@ public class SettingsPanel extends JPanel {
 		
 		gbc.gridx = 1;
 		add(pnlSearch, gbc);
+		
+		gbc.gridx = 0; gbc.gridy = 1;
+		add(pnlFileRules, gbc);
 				
 	}
 	
@@ -70,6 +76,7 @@ public class SettingsPanel extends JPanel {
 			Controller.showError(e);
 			pnlOutput.updateValues();
 			pnlSearch.updateValues();
+			pnlFileRules.updateValues();
 			
 		}
 	}
@@ -79,6 +86,7 @@ public class SettingsPanel extends JPanel {
 		this.settings = settings;
 		pnlOutput.setSettings(settings);
 		pnlSearch.setSettings(settings);
+		pnlFileRules.setSettings(settings);
 	}
 	
 	

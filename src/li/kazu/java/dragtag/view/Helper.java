@@ -1,6 +1,7 @@
 package li.kazu.java.dragtag.view;
 
 import java.awt.Color;
+import java.text.DecimalFormat;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -9,6 +10,9 @@ import javax.swing.border.EtchedBorder;
 
 public class Helper {
 
+	private static final String[] SIZE_UNIT = { " B", " kiB", " MiB", " GiB", " TiB"};
+	private static final DecimalFormat FSIZE = new DecimalFormat("0.00");
+	
 	public static Border getBorder(String title) {
 		Border loweredetched = BorderFactory.createEtchedBorder(EtchedBorder.LOWERED);
 		Border b1 = BorderFactory.createEmptyBorder(5,5,5,5);
@@ -48,6 +52,17 @@ public class Helper {
 		}
 		return (sb.length() == 0) ? ("") : (sb.substring(0, sb.length()-1));
 	
+	}
+	
+	/** create a formatted filesize string */
+	public static String formatFileSize(long size){
+		float tmpSize = size;
+		int idx = 0;
+		while(tmpSize > 1024){
+			tmpSize /= 1024.0f;
+			++idx;
+		}
+		return FSIZE.format(tmpSize) + SIZE_UNIT[idx];
 	}
 
 }
